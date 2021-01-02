@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { AuthProvider } from "./context/auth";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import AuthRoute from "./util/AuthRoute";
+
+import "semantic-ui-css/semantic.min.css";
+import { Container } from "semantic-ui-react";
+import { Provider } from "react-redux";
+
+import Home from "./pages/Home";
+import store from "./redux/store";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Feeds from "./components/Feeds";
+import MenuBar from "./components/MenuBar";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <AuthProvider>
+        <Router>
+          <Container className="container__class">
+            <MenuBar />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/feed" component={Feeds} />
+            <AuthRoute exact path="/login" component={Login} />
+            <AuthRoute exact path="/register" component={Register} />
+          </Container>
+        </Router>
+      </AuthProvider>
+    </Provider>
   );
 }
 
