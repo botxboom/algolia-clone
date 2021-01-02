@@ -1,18 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "../components/axios";
 import Post from "../components/Post";
-import { Grid, Transition } from "semantic-ui-react";
-import commaNumber from "comma-number";
-import { searchMenu, byMenu, forMenu } from "../util/filterTags";
-import { Form, Button, Pagination } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { connect } from "react-redux";
-import { fetchFeed, fetchSearchFeed } from "../redux";
+import { fetchFeed, fetchMiscFeed } from "../redux";
 import Search from "../components/Search";
 import PageNumbers from "../components/PageNumbers";
+import Filters from "../components/Filters";
 
-function Home({ feedData, fetchFeed, fetchSFeed, fetchPageFeed }) {
+function Home({
+  feedData,
+  fetchFeed,
+  fetchSFeed,
+  fetchPageFeed,
+  searchValue,
+  fetchFilterFeed,
+  fetchMiscFeed,
+}) {
   const { user } = useContext(AuthContext);
+
+  console.log(searchValue);
 
   const [post, setPost] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
@@ -67,6 +74,14 @@ function Home({ feedData, fetchFeed, fetchSFeed, fetchPageFeed }) {
       <Grid.Row className="search__bar">
         <Search fetchSearchFeed={fetchSFeed} />
       </Grid.Row>
+      <Grid.Row className="filters__">
+        <Filters
+          fetchfilterfeed={fetchFilterFeed}
+          searchvalue={searchValue}
+          totalResults={feedData["nbHits"]}
+          time={feedData["processingTimeMS"]}
+        />
+      </Grid.Row>
       <Grid.Row className="feed__box">
         {feedData.loading ? (
           <h2>Loading ...</h2>
@@ -96,6 +111,8 @@ function Home({ feedData, fetchFeed, fetchSFeed, fetchPageFeed }) {
       </Grid.Row>
       <Grid.Row>
         <PageNumbers
+          fetchmisfeed={fetchMiscFeed}
+          searchvalue={searchValue}
           fetchpagefeed={fetchPageFeed}
           totalHits={feedData.nbHits}
         />
@@ -208,14 +225,21 @@ function Home({ feedData, fetchFeed, fetchSFeed, fetchPageFeed }) {
 const mapStateToProps = (state) => {
   return {
     feedData: state.feed.data,
+    searchValue: state.feed.searchValue,
+    filterURL: state.feed.filterValue,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchFeed: () => dispatch(fetchFeed()),
-    fetchSFeed: (input) => dispatch(fetchSearchFeed(input)),
-    fetchPageFeed: (pageNumber) => dispatch(fetchFeed(pageNumber - 1)),
+    fetchSFeed: (input) => dispatch(fetchFeed("", input, "")),
+    fetchPageFeed: (input, pageNumber = 0) =>
+      dispatch(fetchFeed("", input, pageNumber)),
+    fetchFilterFeed: (filterURl, input, pageNumber) =>
+      dispatch(fetchFeed(filterURl, input, pageNumber + 2)),
+    fetchMiscFeed: (fu, input, pageNumber) =>
+      dispatch(fetchMiscFeed(fu, input, pageNumber)),
   };
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 
 function PageNumbers(props) {
@@ -14,7 +15,15 @@ function PageNumbers(props) {
       className="page__number"
     >
       <Pagination
-        onPageChange={(e, data) => props.fetchpagefeed(data.activePage)}
+        onPageChange={(e, data) => {
+          props.filterURL
+            ? props.fetchmisfeed(
+                props.filterURL,
+                props.searchvalue,
+                data.activePage
+              )
+            : props.fetchpagefeed(props.searchvalue, data.activePage);
+        }}
         boundaryRange={0}
         ellipsisItem={null}
         firstItem={null}
@@ -29,4 +38,10 @@ function PageNumbers(props) {
   );
 }
 
-export default PageNumbers;
+const mapStateToProps = (state) => {
+  return {
+    filterURL: state.feed.filterValue,
+  };
+};
+
+export default connect(mapStateToProps, null)(PageNumbers);

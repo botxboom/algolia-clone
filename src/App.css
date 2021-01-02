@@ -27,3 +27,17 @@
 .container__class {
   background-color: #f6f6ef;
 }
+
+.filters__ {
+  margin: 10px !important;
+}
+
+#content-desktop {
+  display: inline;
+}
+
+@media screen and (max-width: 768px) {
+  #content-desktop {
+    display: none;
+  }
+}

@@ -23,8 +23,7 @@ const byMenu = [
   {
     key: "date",
     text: "date",
-    value:
-      "http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>86400",
+    value: "http://hn.algolia.com/api/v1/search_by_date?tags=story",
     content: "date",
   },
 ];
