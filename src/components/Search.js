@@ -5,7 +5,7 @@ function Search({ fetchSearchFeed }) {
   const [value, setValue] = useState("");
 
   useEffect(() => {
-    fetchSearchFeed(value);
+    fetchSearchFeed(value, 0);
   }, [value]);
 
   function handleSearchChange(e) {

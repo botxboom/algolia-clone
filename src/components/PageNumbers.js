@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 
 function PageNumbers(props) {
+  console.log(props.filterURL)
   return (
     <div
       style={{
@@ -22,7 +23,8 @@ function PageNumbers(props) {
                 props.searchvalue,
                 data.activePage
               )
-            : props.fetchpagefeed(props.searchvalue, data.activePage);
+            : 
+          props.fetchpagefeed(props.searchvalue, data.activePage);
         }}
         boundaryRange={0}
         ellipsisItem={null}

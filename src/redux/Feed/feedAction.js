@@ -26,37 +26,40 @@ export const fetchFeedFailure = (error) => {
   };
 };
 
-export const fetchFeed = (filterUrl = "", q = "", pn = 0) => {
-  let filterURL = filterUrl + `&query=${q}` + `&page=${pn}`;
-  return (dispatch) => {
+export const fetchFeed = (filterUrl="", q = "", pn = 0) => {
+  let filterURL =  ''
+  if(filterUrl !== ''){
+    filterURL = filterUrl + `&query=${q}` + `&page=${pn}`
+  }else{
+    filterURL = `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,show_hn,ask_hn)&page=${pn}`
+  }
+
+  return (dispatch) => { 
     dispatch(fetchFeedRequest);
     axios
-      .get(
-        filterUrl.length > 0
-          ? filterUrl + `&query=${q}` + `&page=${pn}`
-          : `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,comment,show_hn,ask_hn)&page=${pn}`
-      )
+      .get(filterURL)
       .then((response) => {
         const data = response.data;
         dispatch(fetchFeedSuccess(data, q, filterURL, pn));
       })
       .catch((error) => {
         const errorMsg = error.message;
-        dispatch.fetchFeedFailure(errorMsg);
+        dispatch(fetchFeedFailure(errorMsg));
       });
   };
 };
 
 export const fetchMiscFeed = (filterUrl = "", q = "", pn = 0) => {
-  let filterURL = filterUrl + `&query=${q}` + `&page=${pn}`;
+  let filterURL = ''; 
+  if(filterUrl !== null ){
+    filterURL = filterUrl + `&query=${q}` + `&page=${pn}`;
+  }else{
+    filterURL =  `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,comment,show_hn,ask_hn)&page=${pn}`
+  }
   return (dispatch) => {
     dispatch(fetchFeedRequest);
     axios
-      .get(
-        filterUrl.length > 0
-          ? filterUrl + `&query=${q}` + `&page=${pn}`
-          : `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,comment,show_hn,ask_hn)&page=${pn}`
-      )
+      .get(filterURL)
       .then((response) => {
         const data = response.data;
         dispatch(fetchFeedSuccess(data, q, filterURL, pn));

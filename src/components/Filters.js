@@ -14,7 +14,7 @@ function Filters({
   activePage,
 }) {
   function onSearchChange(e, data) {
-    fetchFilterFeed(data.value, searchvalue, activePage);
+    fetchFilterFeed(data.value, searchvalue, activePage = 0);
   }
 
   return (
@@ -64,6 +64,7 @@ function Filters({
 
 const mapStateToProps = (state) => {
   return {
+
     filterURL: state.feed.filterValue,
     activePage: state.feed.currentActivePage,
   };
