@@ -14,7 +14,7 @@ function Filters({
   activePage,
 }) {
   function onSearchChange(e, data) {
-    fetchFilterFeed(data.value, searchvalue, activePage = 0);
+    fetchFilterFeed(data.value, searchvalue, (activePage = 0));
   }
 
   return (
@@ -26,35 +26,65 @@ function Filters({
         marginRight: 20,
       }}
     >
-      {""} Search {""}
-      <Dropdown
-        button
-        inline
-        basic
-        options={searchMenu}
-        defaultValue={searchMenu[0].value}
-        onChange={onSearchChange}
-      />
-      {""} by {""}
-      <Dropdown
-        button
-        compact
-        inline
-        basic
-        options={byMenu}
-        defaultValue={byMenu[0].value}
-        onChange={onSearchChange}
-      />
-      {""} for {""}
-      <Dropdown
-        button
-        compact
-        inline
-        basic
-        options={forMenu}
-        defaultValue={forMenu[0].value}
-        onChange={onSearchChange}
-      />{" "}
+      <div id="content-desktop">
+        {""} Search {""}
+        <Dropdown
+          button
+          inline
+          basic
+          options={searchMenu}
+          defaultValue={searchMenu[0].value}
+          onChange={onSearchChange}
+        />
+        {""} by {""}
+        <Dropdown
+          button
+          compact
+          inline
+          basic
+          options={byMenu}
+          defaultValue={byMenu[0].value}
+          onChange={onSearchChange}
+        />
+        {""} for {""}
+        <Dropdown
+          button
+          compact
+          inline
+          basic
+          options={forMenu}
+          defaultValue={forMenu[0].value}
+          onChange={onSearchChange}
+        />
+      </div>
+      <div id="content-mobile">
+        <Dropdown
+          button
+          inline
+          basic
+          options={searchMenu}
+          defaultValue={searchMenu[0].value}
+          onChange={onSearchChange}
+        />
+        <Dropdown
+          button
+          compact
+          inline
+          basic
+          options={byMenu}
+          defaultValue={byMenu[0].value}
+          onChange={onSearchChange}
+        />
+        <Dropdown
+          button
+          compact
+          inline
+          basic
+          options={forMenu}
+          defaultValue={forMenu[0].value}
+          onChange={onSearchChange}
+        />
+      </div>
       <p id="content-desktop" style={{ float: "right", fontSize: 12 }}>
         {commaNumber(totalResults)} results in ({time / 1000}) seconds{" "}
       </p>
@@ -64,7 +94,6 @@ function Filters({
 
 const mapStateToProps = (state) => {
   return {
-
     filterURL: state.feed.filterValue,
     activePage: state.feed.currentActivePage,
   };
@@ -73,7 +102,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchFilterFeed: (filterURl, input, pageNumber) =>
-      dispatch(fetchFeed(filterURl, input, pageNumber)),
+      dispatch(fetchFeed(filterURl, encodeURI(input), pageNumber)),
   };
 };
 

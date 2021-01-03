@@ -35,9 +35,37 @@
 #content-desktop {
   display: inline;
 }
+#content-mobile {
+  display: none;
+}
 
 @media screen and (max-width: 768px) {
   #content-desktop {
     display: none;
   }
+  #content-mobile {
+    display: inline;
+  }
+}
+
+.autoContainer {
+  padding: 5px;
+  padding-top: 0px;
+  margin-left: 5px;
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  border-color: white;
+  background-color: white;
+  max-width: "85%";
+  margin-left: 10px;
+  top: 0;
+  left: 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
+  padding: 5px;
 }
