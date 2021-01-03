@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 
 const initialState = {
   user: null,
+  search: []
 };
 
 if (localStorage.getItem("jwtToken")) {
@@ -19,6 +20,7 @@ const AuthContext = createContext({
   user: null,
   login: (data) => {},
   logout: () => {},
+  setUserSearch: (text, time) =>{}
 });
 
 function authReducer(state, action) {
@@ -33,6 +35,11 @@ function authReducer(state, action) {
         ...state,
         user: null,
       };
+    case "SUBMIT_SEARCH":
+      return {
+        ...state,
+        search: [...state.search, [action.payload.username, action.payload.text , action.payload.time]]
+      }
     default:
       return state;
   }
@@ -56,9 +63,21 @@ function AuthProvider(props) {
     });
   }
 
+  function setUserSearch(user, input, time){
+    localStorage.setItem("searchHistory",user, input, time)
+    dispatch({
+      type: "SUBMIT_SEARCH",
+      payload: {
+        username: user,
+        text: input,
+        time: time
+      }
+    })
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user: state.user, login, logout }}
+      value={{ user: state.user, search: state.search, login, logout, setUserSearch }}
       {...props}
     />
   );
