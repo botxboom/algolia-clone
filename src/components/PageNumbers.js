@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 
 function PageNumbers(props) {
-  console.log(props.filterURL)
+  const pageNumber = props.totalHits ? props.totalHits : 0;
+
   return (
     <div
       style={{
@@ -23,8 +24,7 @@ function PageNumbers(props) {
                 props.searchvalue,
                 data.activePage
               )
-            : 
-          props.fetchpagefeed(props.searchvalue, data.activePage);
+            : props.fetchpagefeed(props.searchvalue, data.activePage);
         }}
         boundaryRange={0}
         ellipsisItem={null}
@@ -32,9 +32,7 @@ function PageNumbers(props) {
         lastItem={null}
         defaultActivePage={1}
         siblingRange={1}
-        totalPages={
-          props.totalHits / 20 > 100 ? 100 : Math.floor(props.totalHits / 20)
-        }
+        totalPages={pageNumber / 20 > 100 ? 100 : Math.floor(pageNumber / 20)}
       />
     </div>
   );

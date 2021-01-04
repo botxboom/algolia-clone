@@ -26,21 +26,27 @@ export const fetchFeedFailure = (error) => {
   };
 };
 
-export const fetchFeed = (filterUrl="", q = "", pn = 0) => {
-  let filterURL =  ''
-  if(filterUrl !== ''){
-    filterURL = filterUrl + `&query=${q}` + `&page=${pn}`
-  }else{
-    filterURL = `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,show_hn,ask_hn)&page=${pn}`
+export const fetchFeed = (filterUrl = "", q = "", pn = 0) => {
+  let filterURL = "";
+  if (filterUrl !== "") {
+    filterURL = filterUrl + `&query=${q}` + `&page=${pn}`;
+  } else {
+    filterURL = `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,show_hn,ask_hn)&page=${pn}`;
   }
 
-  return (dispatch) => { 
+  return (dispatch) => {
     dispatch(fetchFeedRequest);
     axios
       .get(filterURL)
       .then((response) => {
         const data = response.data;
-        dispatch(fetchFeedSuccess(data, q, filterURL, pn));
+        let completeData = "";
+        if (data === null) {
+          completeData = null;
+        } else {
+          completeData = data;
+        }
+        dispatch(fetchFeedSuccess(completeData, q, filterURL, pn));
       })
       .catch((error) => {
         const errorMsg = error.message;
@@ -50,11 +56,11 @@ export const fetchFeed = (filterUrl="", q = "", pn = 0) => {
 };
 
 export const fetchMiscFeed = (filterUrl = "", q = "", pn = 0) => {
-  let filterURL = ''; 
-  if(filterUrl !== null ){
+  let filterURL = "";
+  if (filterUrl !== null) {
     filterURL = filterUrl + `&query=${q}` + `&page=${pn}`;
-  }else{
-    filterURL =  `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,comment,show_hn,ask_hn)&page=${pn}`
+  } else {
+    filterURL = `https://hn.algolia.com/api/v1/search?query=${q}&tags=(story,comment,show_hn,ask_hn)&page=${pn}`;
   }
   return (dispatch) => {
     dispatch(fetchFeedRequest);
@@ -62,7 +68,13 @@ export const fetchMiscFeed = (filterUrl = "", q = "", pn = 0) => {
       .get(filterURL)
       .then((response) => {
         const data = response.data;
-        dispatch(fetchFeedSuccess(data, q, filterURL, pn));
+        let completeData = "";
+        if (data === null) {
+          completeData = null;
+        } else {
+          completeData = data;
+        }
+        dispatch(fetchFeedSuccess(completeData, q, filterURL, pn));
       })
       .catch((error) => {
         const errorMsg = error.message;

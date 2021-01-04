@@ -9,12 +9,14 @@ function Filters({
   totalResults,
   time,
   fetchFilterFeed,
-  filterURL,
   searchvalue,
   activePage,
+  prevSearchValue,
 }) {
   function onSearchChange(e, data) {
-    fetchFilterFeed(data.value, searchvalue, (activePage = 0));
+    const filterText = data.value ? data.value : "";
+    const searchv = prevSearchValue ? prevSearchValue : "";
+    fetchFilterFeed(filterText, searchv, (activePage = 0));
   }
 
   return (
@@ -86,7 +88,8 @@ function Filters({
         />
       </div>
       <p id="content-desktop" style={{ float: "right", fontSize: 12 }}>
-        {commaNumber(totalResults)} results in ({time / 1000}) seconds{" "}
+        {commaNumber(totalResults ? totalResults : 0)} results in (
+        {time ? time / 1000 : 0}) seconds{" "}
       </p>
     </div>
   );
@@ -96,13 +99,14 @@ const mapStateToProps = (state) => {
   return {
     filterURL: state.feed.filterValue,
     activePage: state.feed.currentActivePage,
+    prevSearchValue: state.feed.searchValue,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchFilterFeed: (filterURl, input, pageNumber) =>
-      dispatch(fetchFeed(filterURl, encodeURI(input), pageNumber)),
+      dispatch(fetchFeed(filterURl, input, pageNumber)),
   };
 };
 

@@ -16,16 +16,16 @@ function Post(props) {
         </a>
       </div>
       <div className="meta__information">
-        <a href={baseURL + "/item?id=" + props.id} class="reply">
+        <a href={baseURL + "/item?id=" + props.id} className="reply">
           {props.points} points |{" "}
         </a>
-        <a href={baseURL + "/user?id=" + props.author} class="save">
+        <a href={baseURL + "/user?id=" + props.author} className="save">
           {props.author} |{" "}
         </a>
-        <a href={baseURL + "/item?id=" + props.id} class="hide">
+        <a href={baseURL + "/item?id=" + props.id} className="hide">
           {moment(props.createdAt).fromNow()} |{" "}
         </a>
-        <a href={baseURL + "/item?id=" + props.id} class="hide">
+        <a href={baseURL + "/item?id=" + props.id} className="hide">
           {props.commentCount} comments
         </a>
       </div>

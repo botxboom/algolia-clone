@@ -15,7 +15,7 @@ function MenuBar() {
 
   const menubar = user ? (
     <div className="custom__header">
-      <Menu pointing secondary size="massive" color="white">
+      <Menu pointing secondary size="massive">
         <Menu.Item
           name={user.username}
           active={activeItem === "home"}

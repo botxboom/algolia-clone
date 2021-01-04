@@ -10,7 +10,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log(state.currentActivePage);
   switch (action.type) {
     case actions.FETCH_FEED_REQUEST:
       return {

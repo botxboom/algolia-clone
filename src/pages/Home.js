@@ -13,14 +13,11 @@ function Home({
   fetchSFeed,
   fetchPageFeed,
   searchValue,
-  fetchFilterFeed,
   fetchMiscFeed,
-  filterURL
 }) {
-  console.log(filterURL )
   useEffect(() => {
-    fetchFeed();
-  },[]);
+    fetchFeed("", "", "");
+  }, []);
 
   return (
     <Grid column={1}>
@@ -41,12 +38,12 @@ function Home({
           <h2>{fetchFeed.error}</h2>
         ) : (
           <div style={{ display: "inline-grid" }}>
-            {feedData &&
-              feedData.hits &&
+            {feedData && feedData.hits ? (
               feedData.hits.map((data) => {
                 return (
                   data.title && (
                     <Post
+                      key={data.objectID}
                       id={data.objectID}
                       title={data.title}
                       url={data.url}
@@ -57,7 +54,17 @@ function Home({
                     />
                   )
                 );
-              })}
+              })
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <h1>Loading...</h1>
+              </div>
+            )}
           </div>
         )}
       </Grid.Row>
@@ -66,7 +73,7 @@ function Home({
           fetchmisfeed={fetchMiscFeed}
           searchvalue={searchValue}
           fetchpagefeed={fetchPageFeed}
-          totalHits={feedData.nbHits}
+          totalHits={feedData ? feedData.nbHits : 0}
         />
       </Grid.Row>
     </Grid>
@@ -87,9 +94,9 @@ const mapDispatchToProps = (dispatch) => {
     fetchSFeed: (input, pn) => dispatch(fetchFeed("", input, pn)),
     fetchPageFeed: (input = "", pageNumber = 0) =>
       dispatch(fetchFeed(null, input, pageNumber)),
-    fetchFilterFeed: (filterURl, input, pageNumber=0) =>
+    fetchFilterFeed: (filterURl, input, pageNumber = 0) =>
       dispatch(fetchFeed(filterURl, input, pageNumber)),
-    fetchMiscFeed: (fu, input, pageNumber=0) =>
+    fetchMiscFeed: (fu, input, pageNumber = 0) =>
       dispatch(fetchMiscFeed(fu, input, pageNumber)),
   };
 };

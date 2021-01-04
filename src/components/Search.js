@@ -7,11 +7,14 @@ function Search({ fetchSearchFeed }) {
 
   const context = useContext(AuthContext);
 
+  let v = value ? value : "";
+
   //store search data into localStorage
   function save() {
     const uname = context.user && context.user.username;
     const time = new Date().toLocaleTimeString();
-    const newData = { uname, value, time };
+    const searchValue = value.length > 0 ? value : "";
+    const newData = { uname, searchValue, time };
     if (localStorage.getItem("data") === null) {
       localStorage.setItem("data", "[]");
     }
@@ -32,8 +35,8 @@ function Search({ fetchSearchFeed }) {
   }
 
   useEffect(() => {
-    fetchSearchFeed(value, 0);
-  }, [value]);
+    fetchSearchFeed(v, 0);
+  }, [v]);
 
   function handleSearchChange(e) {
     setValue(e.target.value);
@@ -41,6 +44,8 @@ function Search({ fetchSearchFeed }) {
 
   function handleClick(e) {
     e.preventDefault();
+    setValue(value);
+    fetchSearchFeed(value, 0);
     save();
   }
 
@@ -66,11 +71,11 @@ function Search({ fetchSearchFeed }) {
       }}
     >
       <form onSubmit={handleClick} className="post-form">
-        <div style={{ width: "100%", padding: 10 }} class="ui input">
+        <div style={{ width: "100%", padding: 10 }} className="ui input">
           <input
             style={{ width: "85%" }}
             onClick={onClickOnInput}
-            autocomplete="off"
+            autoComplete="off"
             placeholder="story, comment, url ..."
             name="body"
             list="history"
@@ -81,14 +86,14 @@ function Search({ fetchSearchFeed }) {
             {options.length > 0 && (
               <div>
                 {options.map((v, i) => {
-                  return <option value={v["value"]} />;
+                  return <option value={v["searchValue"]} />;
                 })}
               </div>
             )}
           </datalist>
           <button
             id="content-desktop"
-            class="ui primary button"
+            className="ui primary button"
             style={{ float: "right", marginLeft: 5 }}
             onClick={handleClick}
           >
@@ -98,9 +103,9 @@ function Search({ fetchSearchFeed }) {
             onClick={handleClick}
             style={{ marginLeft: 5 }}
             id="content-mobile"
-            class="ui icon blue button"
+            className="ui icon blue button"
           >
-            <i aria-hidden="true" class="search icon"></i>
+            <i aria-hidden="true" className="search icon"></i>
           </button>
         </div>
       </form>
